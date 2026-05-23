@@ -34,9 +34,9 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.15);
     }
 
-    .nav-logo { display: flex; align-items: center; gap: 12px; height: 80%; }
-    .nav-logo img { height: 54px; width: auto; object-fit: contain; display: block; }
-    .logo-text { color: white; font-size: 20px; font-weight: 800; }
+    .nav-logo { display: flex; align-items:center; gap: 12px; height: 100%; }
+    .nav-logo img { height:70px; width: 100px;; object-fit:contain; display:block; }
+    .logo-text { color: white; font-size: 35px; font-weight: 800; }
     .logo-text span { color: var(--yellow); }
 
     .nav-right { display: flex; align-items: center; gap: 24px; }
@@ -112,11 +112,11 @@
       border: 1px solid var(--yellow);
       border-radius: 20px;
       padding: 5px 16px;
-      font-size: 13px;
+      font-size: 23px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 60px;
       position: relative;
       z-index: 1;
     }
@@ -435,6 +435,7 @@
       <form method="POST" action="/predict" enctype="multipart/form-data" id="upload-form">
         <input type="hidden" name="source" id="input-source" value="upload" />
         <input type="hidden" name="camera_data" id="camera-data" value="" />
+        <input type="hidden" name="lang" id="lang-input" value="en" />
 
         <!-- UPLOAD PANEL -->
         <div class="panel active" id="panel-upload">
@@ -564,23 +565,26 @@
 
     function setLang(lang) {
       currentLang = lang;
+      localStorage.setItem('leafdoc_lang', lang);
+      document.getElementById('lang-input').value = lang;
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       document.querySelector(`.lang-btn:${lang === 'en' ? 'first-child' : 'last-child'}`).classList.add('active');
 
       document.querySelectorAll('[data-en]').forEach(el => {
-        // Skip footer elements
         if (el.closest('footer')) return;
-
         const text = el.getAttribute(`data-${lang}`);
         if (text) {
-          if (el.tagName === 'H1') {
-            el.innerHTML = text;
-          } else {
-            el.textContent = text;
-          }
+          if (el.tagName === 'H1') el.innerHTML = text;
+          else el.textContent = text;
         }
       });
     }
+
+    // Auto-apply saved language on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('leafdoc_lang') || 'en';
+      if (saved === 'ne') setLang('ne');
+    });
 
     // ===== UPLOAD TAB =====
     let cameraStream = null;
