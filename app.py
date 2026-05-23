@@ -68,19 +68,34 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    if "file" not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
+    source = request.form.get("source", "upload")
 
-    file = request.files["file"]
-    if file.filename == "":
-        return jsonify({"error": "No file selected"}), 400
+    if source == "camera":
+        # Handle base64 camera image
+        camera_data = request.form.get("camera_data", "")
+        if not camera_data:
+            return jsonify({"error": "No camera image captured"}), 400
 
-    filepath = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(filepath)
+        import base64, re
+        image_data = re.sub(r'^data:image/.+;base64,', '', camera_data)
+        image_bytes = base64.b64decode(image_data)
+
+        filename = "camera_capture.jpg"
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
+        with open(filepath, "wb") as f:
+            f.write(image_bytes)
+    else:
+        # Handle file upload
+        if "file" not in request.files:
+            return jsonify({"error": "No file uploaded"}), 400
+        file = request.files["file"]
+        if file.filename == "":
+            return jsonify({"error": "No file selected"}), 400
+        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(filepath)
 
     result = predict_image(filepath)
     result["image_path"] = "/" + filepath
-
     return render_template("result.html", result=result)
 
 if __name__ == "__main__":
