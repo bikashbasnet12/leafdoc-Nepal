@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Result - Krishi AI Nepal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green:       #2d6a4f;
+      --green-mid:   #40916c;
+      --green-light: #74c69d;
+      --yellow:      #f4a261;
+      --orange:      #e76f51;
+      --cream:       #fefae0;
+      --text:        #1a1a2e;
+      --muted:       #6b6b6b;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    nav {
+      background: var(--green);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .logo-text {
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .logo-text span { color: var(--yellow); }
+
+    .back-btn {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .page {
+      max-width: 620px;
+      margin: 40px auto;
+      padding: 0 20px 60px;
+    }
+
+    .result-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .leaf-img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+    }
+
+    .result-body { padding: 28px; }
+
+    /* Confidence */
+    .conf-section { margin-bottom: 24px; }
+
+    .conf-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .conf-label { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .conf-value { font-size: 22px; font-weight: 800; color: var(--green); }
+
+    .conf-bar-bg {
+      background: #e8f5e9;
+      border-radius: 8px;
+      height: 10px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .conf-bar {
+      height: 100%;
+      border-radius: 8px;
+      background: linear-gradient(90deg, var(--green-light), var(--green));
+      transition: width 1s ease;
+    }
+
+    .conf-note {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Info grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .info-box {
+      background: #f8fffe;
+      border: 2px solid #e0f0e8;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .info-lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .info-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .severity-badge {
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+    }
+
+    /* Sections */
+    .section { margin-bottom: 20px; }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-body {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.7;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border-left: 4px solid var(--green-light);
+      background: #f8fffe;
+    }
+
+    .section-body.red   { border-color: #ef4444; background: #fff5f5; }
+    .section-body.blue  { border-color: #3b82f6; background: #f5f8ff; }
+
+    .healthy-banner {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Buy section */
+    .buy-section { margin-bottom: 20px; }
+
+    .buy-cards { display: flex; flex-direction: column; gap: 10px; }
+
+    .buy-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8fffe;
+      border: 2px solid #e0f0e8;
+      border-radius: 14px;
+      padding: 14px 16px;
+      transition: border-color 0.2s;
+    }
+
+    .buy-card:hover { border-color: var(--green-light); }
+
+    .buy-rank {
+      width: 32px;
+      height: 32px;
+      background: var(--green);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .buy-info { flex: 1; }
+
+    .buy-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .buy-platform {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .buy-badge {
+      font-size: 11px;
+      color: white;
+      background: var(--green-mid);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .buy-btn {
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .buy-btn:hover {
+      background: var(--green-mid);
+      transform: translateY(-1px);
+    }
+
+    .buy-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* Analyze again */
+    .again-btn {
+      display: block;
+      text-align: center;
+      background: linear-gradient(135deg, var(--green), var(--green-mid));
+      color: white;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 15px;
+      transition: all 0.3s;
+      margin-top: 4px;
+    }
+
+    .again-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(45,106,79,0.3);
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .result-body { padding: 20px; }
+      .buy-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo" style="display:flex;align-items:center;gap:12px;"><img src="/static/leaficon.jpeg" style="width:40px;height:40px;object-fit:contain;background:white;border-radius:8px;padding:3px;" /><div class="logo-text" style="color:white;font-size:20px;font-weight:800;">LeafDoc <span>Nepal</span></div></div>
+    <a href="/" class="back-btn">Analyze Another Leaf</a>
+  </nav>
+
+  <div class="page">
+    <div class="result-card">
+
+      {% if result.image_path %}
+      <img src="{{ result.image_path }}" alt="Uploaded Leaf" class="leaf-img" />
+      {% endif %}
+
+      <div class="result-body">
+
+        <!-- Confidence -->
+        <div class="conf-section">
+          <div class="conf-row">
+            <span class="conf-label">Model Confidence</span>
+            <span class="conf-value">{{ result.confidence }}%</span>
+          </div>
+          <div class="conf-bar-bg">
+            <div class="conf-bar" style="width: {{ result.confidence }}%"></div>
+          </div>
+          <p class="conf-note">
+            {% if result.confidence >= 80 %}High confidence — result is reliable
+            {% elif result.confidence >= 60 %}Moderate confidence — try a clearer image if unsure
+            {% else %}Low confidence — result may not be accurate
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Plant + Severity -->
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="info-lbl">Plant</div>
+            <div class="info-val">{{ result.plant }}</div>
+          </div>
+          <div class="info-box">
+            <div class="info-lbl">Severity</div>
+            <span class="severity-badge" style="background: {{ result.color }};">{{ result.severity }}</span>
+          </div>
+        </div>
+
+        <!-- Healthy banner -->
+        {% if result.severity == "None" %}
+        <div class="healthy-banner">This leaf appears healthy. No disease detected.</div>
+        {% endif %}
+
+        <!-- Detected condition -->
+        <div class="section">
+          <div class="section-title">Detected Condition</div>
+          <div class="section-body">{{ result.disease }}</div>
+        </div>
+
+        <!-- Treatment -->
+        <div class="section">
+          <div class="section-title">Recommended Treatment</div>
+          <div class="section-body red">{{ result.treatment }}</div>
+        </div>
+
+        <!-- Fertilizer -->
+        <div class="section">
+          <div class="section-title">Fertilizer Advice</div>
+          <div class="section-body blue">{{ result.fertilizer }}</div>
+        </div>
+
+        <!-- Buy section -->
+        {% if result.buy_links %}
+        <div class="buy-section">
+          <div class="section-title">Buy Products Online in Nepal</div>
+          <div class="buy-cards">
+            {% for link in result.buy_links %}
+            <div class="buy-card">
+              <div class="buy-rank">{{ loop.index }}</div>
+              <div class="buy-info">
+                <div class="buy-name">{{ link.label }}</div>
+                <div class="buy-platform">{{ link.platform }}</div>
+              </div>
+              <span class="buy-badge">
+                {% if loop.index == 1 %}Best Match
+                {% elif loop.index == 2 %}Good Match
+                {% else %}Available
+                {% endif %}
+              </span>
+              <a href="{{ link.url }}" target="_blank" class="buy-btn">Buy Now</a>
+            </div>
+            {% endfor %}
+          </div>
+          <p class="buy-note">Links open product search on Kheti.farm Nepal. Compare prices before purchasing.</p>
+        </div>
+        {% endif %}
+
+        <a href="/" class="again-btn">Analyze Another Leaf</a>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
