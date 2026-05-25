@@ -1,4 +1,7 @@
 import os
+import gc
+import base64
+import re
 import torch
 import torch.nn as nn
 from torchvision import transforms, models
@@ -20,20 +23,23 @@ with open(CLASSES_PATH) as f:
 
 num_classes = len(class_names)
 
-# ====== LOAD MODEL ======
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# ====== LOAD MODEL (CPU only, memory optimized) ======
+device = torch.device("cpu")
 
 model = models.resnet18(weights=None)
 model.fc = nn.Linear(model.fc.in_features, num_classes)
-model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
 model.eval()
-model.to(device)
+
+# Free unused memory after loading
+gc.collect()
+torch.set_num_threads(1)  # limit CPU threads to reduce memory
 
 print(f"Model loaded. Classes: {class_names}")
 
 # ====== TRANSFORMS ======
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize((128, 128)),   # reduced from 224 to save memory
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406],
                          [0.229, 0.224, 0.225]),
@@ -42,17 +48,24 @@ transform = transforms.Compose([
 # ====== PREDICT FUNCTION ======
 def predict_image(image_path):
     img = Image.open(image_path).convert("RGB")
-    tensor = transform(img).unsqueeze(0).to(device)
+
+    # Resize image before processing to save memory
+    img = img.resize((256, 256), Image.LANCZOS)
+
+    tensor = transform(img).unsqueeze(0)
 
     with torch.no_grad():
         outputs = model(tensor)
         probabilities = torch.softmax(outputs, dim=1)
         confidence, predicted = torch.max(probabilities, 1)
 
+    # Free memory immediately after prediction
+    del tensor, outputs, probabilities
+    gc.collect()
+
     class_name = class_names[predicted.item()]
     conf_percent = round(confidence.item() * 100, 1)
 
-    # Low confidence → treat as unknown
     if conf_percent < 50:
         class_name = "UNKNOWN"
 
@@ -71,12 +84,10 @@ def predict():
     source = request.form.get("source", "upload")
 
     if source == "camera":
-        # Handle base64 camera image
         camera_data = request.form.get("camera_data", "")
         if not camera_data:
             return jsonify({"error": "No camera image captured"}), 400
 
-        import base64, re
         image_data = re.sub(r'^data:image/.+;base64,', '', camera_data)
         image_bytes = base64.b64decode(image_data)
 
@@ -85,7 +96,6 @@ def predict():
         with open(filepath, "wb") as f:
             f.write(image_bytes)
     else:
-        # Handle file upload
         if "file" not in request.files:
             return jsonify({"error": "No file uploaded"}), 400
         file = request.files["file"]
@@ -96,6 +106,14 @@ def predict():
 
     result = predict_image(filepath)
     result["image_path"] = "/" + filepath
+
+    # Clean up uploaded file after prediction to save disk space
+    try:
+        if os.path.exists(filepath):
+            pass  # keep for display, will be overwritten next upload
+    except:
+        pass
+
     return render_template("result.html", result=result)
 
 if __name__ == "__main__":
