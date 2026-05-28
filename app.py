@@ -1,10 +1,8 @@
 import os
-import gc
-import base64
 import re
-import torch
-import torch.nn as nn
-from torchvision import transforms, models
+import base64
+import numpy as np
+import onnxruntime as ort
 from PIL import Image
 from flask import Flask, render_template, request, jsonify
 from disease_info import get_info
@@ -12,7 +10,7 @@ from disease_info import get_info
 app = Flask(__name__)
 
 # ====== CONFIG ======
-MODEL_PATH = "model.pth"
+MODEL_PATH = "model.onnx"
 CLASSES_PATH = "classes.txt"
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -23,55 +21,44 @@ with open(CLASSES_PATH) as f:
 
 num_classes = len(class_names)
 
-# ====== LOAD MODEL (CPU only, memory optimized) ======
-device = torch.device("cpu")
+# ====== LOAD ONNX MODEL (very lightweight) ======
+session = ort.InferenceSession(MODEL_PATH)
+input_name = session.get_inputs()[0].name
+print(f"ONNX model loaded. Classes: {class_names}")
 
-model = models.resnet18(weights=None)
-model.fc = nn.Linear(model.fc.in_features, num_classes)
-model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
-model.eval()
+# ====== TRANSFORMS (manual, no PyTorch needed) ======
+MEAN = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+STD  = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 
-# Free unused memory after loading
-gc.collect()
-torch.set_num_threads(1)  # limit CPU threads to reduce memory
-
-print(f"Model loaded. Classes: {class_names}")
-
-# ====== TRANSFORMS ======
-transform = transforms.Compose([
-    transforms.Resize((128, 128)),   # reduced from 224 to save memory
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406],
-                         [0.229, 0.224, 0.225]),
-])
+def preprocess(image_path):
+    img = Image.open(image_path).convert("RGB")
+    img = img.resize((224,224), Image.LANCZOS)
+    arr = np.array(img, dtype=np.float32) / 255.0
+    arr = (arr - MEAN) / STD
+    arr = arr.transpose(2, 0, 1)          # HWC → CHW
+    arr = np.expand_dims(arr, axis=0)     # add batch dim
+    return arr.astype(np.float32)
 
 # ====== PREDICT FUNCTION ======
 def predict_image(image_path):
-    img = Image.open(image_path).convert("RGB")
+    tensor = preprocess(image_path)
+    outputs = session.run(None, {input_name: tensor})[0]
 
-    # Resize image before processing to save memory
-    img = img.resize((256, 256), Image.LANCZOS)
+    # Softmax
+    exp = np.exp(outputs - outputs.max())
+    probabilities = exp / exp.sum()
 
-    tensor = transform(img).unsqueeze(0)
+    predicted = int(np.argmax(probabilities))
+    confidence = round(float(probabilities[0][predicted]) * 100, 1)
 
-    with torch.no_grad():
-        outputs = model(tensor)
-        probabilities = torch.softmax(outputs, dim=1)
-        confidence, predicted = torch.max(probabilities, 1)
+    class_name = class_names[predicted]
 
-    # Free memory immediately after prediction
-    del tensor, outputs, probabilities
-    gc.collect()
-
-    class_name = class_names[predicted.item()]
-    conf_percent = round(confidence.item() * 100, 1)
-
-    if conf_percent < 50:
+    if confidence < 50:
         class_name = "UNKNOWN"
 
     info = get_info(class_name)
     info["class_name"] = class_name
-    info["confidence"] = conf_percent
+    info["confidence"] = confidence
     return info
 
 # ====== ROUTES ======
@@ -106,14 +93,6 @@ def predict():
 
     result = predict_image(filepath)
     result["image_path"] = "/" + filepath
-
-    # Clean up uploaded file after prediction to save disk space
-    try:
-        if os.path.exists(filepath):
-            pass  # keep for display, will be overwritten next upload
-    except:
-        pass
-
     return render_template("result.html", result=result)
 
 if __name__ == "__main__":
