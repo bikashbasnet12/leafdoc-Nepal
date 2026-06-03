@@ -1,11 +1,4 @@
-# Buy links:
-# - store.kheti.farm = verified Nepal agro store (Kathmandu & Pokhara delivery)
-# - Daraz link only included if product confirmed available
-
 KHETI = "https://store.kheti.farm/index.php?route=product/search&search="
-
-# Only one Daraz link confirmed working for fungicides
-DARAZ_FUNGICIDE = "https://www.daraz.com.np/catalog/?q=fungicide"
 
 def kheti(search_term, label):
     return {
@@ -18,11 +11,17 @@ DISEASE_INFO = {
 
     # ===== APPLE =====
     "APPLE_HEALTHY": {
-        "plant": "Apple",
-        "disease": "Healthy",
-        "severity": "None",
-        "treatment": "No treatment needed. Keep monitoring regularly.",
-        "fertilizer": "Apply balanced NPK fertilizer (10-10-10) once a month.",
+        "plant": {"en": "Apple", "ne": "स्याउ (Apple)"},
+        "disease": {"en": "Healthy Leaf", "ne": "स्वस्थ पात (Healthy Leaf)"},
+        "severity": {"en": "None", "ne": "छैन (None)"},
+        "treatment": {
+            "en": "No treatment required. Maintain regular pruning and monitoring.",
+            "ne": "कुनै उपचार आवश्यक छैन। नियमित काँटछाँट र रेखदेख जारी राख्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Apply balanced organic compost (NPK Fertilizer) annually to maintain soil health.",
+            "ne": "माटोको स्वास्थ्य राम्रो राख्न वार्षिक रूपमा सन्तुलित प्राङ्गारिक मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("NPK fertilizer", "NPK Fertilizer"),
             kheti("organic fertilizer", "Organic Fertilizer"),
@@ -30,11 +29,17 @@ DISEASE_INFO = {
     },
 
     "APPLE_ROT": {
-        "plant": "Apple",
-        "disease": "Apple Rot (Black Rot)",
-        "severity": "High",
-        "treatment": "Remove infected fruits and leaves. Apply copper-based fungicide.",
-        "fertilizer": "Reduce nitrogen. Apply potassium-rich fertilizer.",
+        "plant": {"en": "Apple", "ne": "स्याउ (Apple)"},
+        "disease": {"en": "Black Rot / Scab", "ne": "कालो सड्ने रोग / स्क्याब (Black Rot)"},
+        "severity": {"en": "High", "ne": "उच्च (High)"},
+        "treatment": {
+            "en": "Apply copper oxychloride fungicide. Remove and destroy infected crop debris from orchard floors.",
+            "ne": "कपर अक्सिक्लोराइड ढुसीनाशक प्रयोग गर्नुहोस्। बगैंचाको भुइँबाट संक्रमित बालीका अवशेषहरू हटाउनुहोस् र नष्ट गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Avoid excess nitrogen. Apply potassium fertilizer to improve plant immunity.",
+            "ne": "अत्यधिक नाइट्रोजनको प्रयोग नगर्नुहोस्। बिरुवाको रोग प्रतिरोधात्मक क्षमता बढाउन पोटासियम मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("copper fungicide", "Copper Fungicide"),
             kheti("potassium fertilizer", "Potassium Fertilizer"),
@@ -43,11 +48,17 @@ DISEASE_INFO = {
 
     # ===== BANANA =====
     "BANANA_HEALTHY": {
-        "plant": "Banana",
-        "disease": "Healthy",
-        "severity": "None",
-        "treatment": "No treatment needed.",
-        "fertilizer": "Apply NPK 8-10-10 every 2 months.",
+        "plant": {"en": "Banana", "ne": "केरा (Banana)"},
+        "disease": {"en": "Healthy Leaf", "ne": "स्वस्थ पात (Healthy Leaf)"},
+        "severity": {"en": "None", "ne": "छैन (None)"},
+        "treatment": {
+            "en": "No treatment required. Ensure adequate spacing between plants.",
+            "ne": "कुनै उपचार आवश्यक छैन। बिरुवाहरू बीच पर्याप्त दूरी सुनिश्चित गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Maintain regular watering and apply nitrogen-rich (NPK) manure during vegetative growth.",
+            "ne": "नियमित सिँचाइ गर्नुहोस् र वनस्पति वृद्धिको समयमा नाइट्रोजनयुक्त मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("NPK fertilizer", "NPK Fertilizer"),
             kheti("organic fertilizer", "Organic Fertilizer"),
@@ -55,23 +66,35 @@ DISEASE_INFO = {
     },
 
     "BANANA_PANAMA": {
-        "plant": "Banana",
-        "disease": "Panama Disease (Fusarium Wilt)",
-        "severity": "Very High",
-        "treatment": "No chemical cure. Remove and destroy affected plants. Use disease-resistant varieties.",
-        "fertilizer": "Use organic compost to improve soil health.",
+        "plant": {"en": "Banana", "ne": "केरा (Banana)"},
+        "disease": {"en": "Panama Wilt (Fusarium oxysporum)", "ne": "पानामा ओइलाउने रोग (Panama Wilt)"},
+        "severity": {"en": "Very High", "ne": "अति उच्च (Very High)"},
+        "treatment": {
+            "en": "No chemical cure. Remove and destroy infected plants. Use resistant varieties.",
+            "ne": "कुनै रासायनिक उपचार छैन। संक्रमित बिरुवाहरू हटाउनुहोस् र नष्ट गर्नुहोस्। प्रतिरोधी जातहरू प्रयोग गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Maintain regular watering and apply nitrogen-rich manure during vegetative growth.",
+            "ne": "नियमित सिँचाइ गर्नुहोस् र वनस्पति वृद्धिको समयमा नाइट्रोजनयुक्त मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
-            kheti("organic compost", "Organic Compost"),
-            kheti("bio fertilizer", "Bio Fertilizer"),
+            kheti("carbendazim fungicide", "Carbendazim Fungicide"),
+            kheti("agricultural lime", "Agricultural Lime"),
         ]
     },
 
     "BANANA_SIGATOKA": {
-        "plant": "Banana",
-        "disease": "Sigatoka Leaf Spot",
-        "severity": "Medium",
-        "treatment": "Apply Mancozeb or Chlorothalonil fungicide. Remove infected leaves.",
-        "fertilizer": "Apply potassium-rich fertilizer. Avoid overhead irrigation.",
+        "plant": {"en": "Banana", "ne": "केरा (Banana)"},
+        "disease": {"en": "Sigatoka Leaf Spot", "ne": "सिगाटोका पातको दाग (Sigatoka)"},
+        "severity": {"en": "Medium", "ne": "मध्यम (Medium)"},
+        "treatment": {
+            "en": "Apply Mancozeb or Chlorothalonil fungicide. Remove and burn heavily infected leaves.",
+            "ne": "म्यान्कोजेब वा क्लोरोथालोनिल ढुसीनाशक प्रयोग गर्नुहोस्। धेरै संक्रमित पातहरू हटाउनुहोस् र जलाउनुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Apply potassium-rich fertilizer. Avoid overhead sprinkler irrigation to minimize moisture build-up.",
+            "ne": "पोटासियमयुक्त मल प्रयोग गर्नुहोस्। चिसोपन कम गर्न टाउको माथिबाट गरिने सिँचाइ नगर्नुहोस्।"
+        },
         "buy_links": [
             kheti("mancozeb fungicide", "Mancozeb Fungicide"),
             kheti("potassium fertilizer", "Potassium Fertilizer"),
@@ -80,35 +103,52 @@ DISEASE_INFO = {
 
     # ===== CORN =====
     "CORN_HEALTHY": {
-        "plant": "Corn (Maize)",
-        "disease": "Healthy",
-        "severity": "None",
-        "treatment": "No treatment needed.",
-        "fertilizer": "Apply urea fertilizer at 3–4 week intervals.",
+        "plant": {"en": "Corn (Maize)", "ne": "मकै (Corn)"},
+        "disease": {"en": "Healthy Leaf", "ne": "स्वस्थ पात (Healthy Leaf)"},
+        "severity": {"en": "None", "ne": "छैन (None)"},
+        "treatment": {
+            "en": "No treatment required. Ensure clear weeding around stalks.",
+            "ne": "कुनै उपचार आवश्यक छैन। बोटबिरुवाको वरिपरि सफा गोडमेल सुनिश्चित गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Apply Urea at knee-high stage and during silking time.",
+            "ne": "घुँडासम्म उचाइ भएको अवस्थामा र जुँगा आउने समयमा युरिया मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("urea fertilizer", "Urea Fertilizer"),
-            kheti("nitrogen fertilizer", "Nitrogen Fertilizer"),
         ]
     },
 
     "CORN_LEAF_BLIGHT": {
-        "plant": "Corn (Maize)",
-        "disease": "Northern Corn Leaf Blight",
-        "severity": "High",
-        "treatment": "Apply Propiconazole or Azoxystrobin fungicide. Remove infected leaves.",
-        "fertilizer": "Apply balanced NPK with extra potassium.",
+        "plant": {"en": "Corn (Maize)", "ne": "मकै (Corn)"},
+        "disease": {"en": "Northern Leaf Blight", "ne": "उत्तरी पातको ब्लाइट (Northern Blight)"},
+        "severity": {"en": "Medium", "ne": "मध्यम (Medium)"},
+        "treatment": {
+            "en": "Spray Azoxystrobin or Pyraclostrobin if lesions expand rapidly. Practice crop rotation.",
+            "ne": "यदि दागहरू द्रुत रूपमा फैलिएमा एजोक्सिस्ट्रोबिन वा पाइराक्लोस्ट्रोबिन छर्नुहोस्। बाली चक्र अपनाउनुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Balance NPK application. Ensure adequate Zinc micronutrient supplementation.",
+            "ne": "एनपीके (NPK) को सन्तुलित प्रयोग गर्नुहोस्। पर्याप्त जस्ता (Zinc) सुक्ष्मपोषक तत्वको आपूर्ति सुनिश्चित गर्नुहोस्।"
+        },
         "buy_links": [
-            kheti("propiconazole fungicide", "Propiconazole Fungicide"),
-            kheti("NPK fertilizer", "NPK + Potassium Fertilizer"),
+            kheti("azoxystrobin fungicide", "Azoxystrobin Fungicide"),
+            kheti("zinc micronutrient", "Zinc Micronutrient"),
         ]
     },
 
     "CORN_LEAF_GRAY_SPOT": {
-        "plant": "Corn (Maize)",
-        "disease": "Gray Leaf Spot",
-        "severity": "Medium",
-        "treatment": "Apply Strobilurin-based fungicide. Improve air circulation.",
-        "fertilizer": "Apply nitrogen fertilizer in split doses.",
+        "plant": {"en": "Corn (Maize)", "ne": "मकै (Corn)"},
+        "disease": {"en": "Gray Leaf Spot", "ne": "खैरो पातको दाग (Gray Leaf Spot)"},
+        "severity": {"en": "Medium", "ne": "मध्यम (Medium)"},
+        "treatment": {
+            "en": "Apply Strobilurin-based fungicide. Improve air circulation.",
+            "ne": "स्ट्रोबिलुरिनमा आधारित ढुसीनाशक विषादी प्रयोग गर्नुहोस्। हावाको आवतजावत सुधार्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Apply nitrogen fertilizer in split doses.",
+            "ne": "नाइट्रोजनयुक्त मल मात्रा मिलाएर विभिन्न चरणमा प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("strobilurin fungicide", "Strobilurin Fungicide"),
             kheti("urea fertilizer", "Urea Fertilizer"),
@@ -116,11 +156,17 @@ DISEASE_INFO = {
     },
 
     "CORN_LEAF_RUST": {
-        "plant": "Corn (Maize)",
-        "disease": "Common Rust",
-        "severity": "Medium",
-        "treatment": "Apply Mancozeb fungicide. Remove infected leaves.",
-        "fertilizer": "Maintain balanced NPK. Avoid excess nitrogen.",
+        "plant": {"en": "Corn (Maize)", "ne": "मकै (Corn)"},
+        "disease": {"en": "Common Rust", "ne": "सामान्य रस्ट/सिन्दुरे रोग (Common Rust)"},
+        "severity": {"en": "Medium", "ne": "मध्यम (Medium)"},
+        "treatment": {
+            "en": "Apply Mancozeb fungicide. Remove infected leaves.",
+            "ne": "म्यान्कोजेब ढुसीनाशक विषादी प्रयोग गर्नुहोस्। संक्रमित पातहरू हटाउनुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Maintain balanced NPK. Avoid excess nitrogen.",
+            "ne": "सन्तुलित एनपीके (NPK) को मात्रा कायम राख्नुहोस्। अत्यधिक नाइट्रोजनको प्रयोग नगर्नुहोस्।"
+        },
         "buy_links": [
             kheti("mancozeb fungicide", "Mancozeb Fungicide"),
             kheti("NPK fertilizer", "Balanced NPK Fertilizer"),
@@ -129,11 +175,17 @@ DISEASE_INFO = {
 
     # ===== POTATO =====
     "POTATO_HEALTHY": {
-        "plant": "Potato",
-        "disease": "Healthy",
-        "severity": "None",
-        "treatment": "No treatment needed.",
-        "fertilizer": "Apply NPK 10-20-20 at planting stage.",
+        "plant": {"en": "Potato", "ne": "आलु (Potato)"},
+        "disease": {"en": "Healthy", "ne": "स्वस्थ (Healthy)"},
+        "severity": {"en": "None", "ne": "छैन (None)"},
+        "treatment": {
+            "en": "No treatment needed.",
+            "ne": "कुनै उपचार आवश्यक छैन।"
+        },
+        "fertilizer": {
+            "en": "Apply NPK 10-20-20 at planting stage.",
+            "ne": "रोप्ने चरणमा एनपीके १०-२०-२० (NPK 10-20-20) मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("NPK fertilizer", "NPK Fertilizer"),
             kheti("DAP fertilizer", "DAP Fertilizer"),
@@ -141,11 +193,17 @@ DISEASE_INFO = {
     },
 
     "POTATO_EARLY_BLIGHT": {
-        "plant": "Potato",
-        "disease": "Early Blight (Alternaria solani)",
-        "severity": "Medium",
-        "treatment": "Apply Mancozeb or Chlorothalonil fungicide every 7–10 days.",
-        "fertilizer": "Boost potassium and calcium. Avoid excess nitrogen.",
+        "plant": {"en": "Potato", "ne": "आलु (Potato)"},
+        "disease": {"en": "Early Blight (Alternaria solani)", "ne": "प्रारम्भिक ब्लाइट/डढुवा रोग (Early Blight)"},
+        "severity": {"en": "Medium", "ne": "मध्यम (Medium)"},
+        "treatment": {
+            "en": "Apply Mancozeb or Chlorothalonil fungicide every 7–10 days.",
+            "ne": "प्रत्येक ७-१० दिनमा म्यान्कोजेब वा क्लोरोथालोनिल ढुसीनाशक विषादी प्रयोग गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Boost potassium and calcium. Avoid excess nitrogen.",
+            "ne": "पोटासियम र क्याल्सियमको मात्रा बढाउनुहोस्। अत्यधिक नाइट्रोजनको प्रयोग नगर्नुहोस्।"
+        },
         "buy_links": [
             kheti("mancozeb fungicide", "Mancozeb Fungicide"),
             kheti("potassium fertilizer", "Potassium Fertilizer"),
@@ -153,11 +211,17 @@ DISEASE_INFO = {
     },
 
     "POTATO_LATE_BLIGHT": {
-        "plant": "Potato",
-        "disease": "Late Blight (Phytophthora infestans)",
-        "severity": "Very High",
-        "treatment": "Apply Metalaxyl + Mancozeb fungicide immediately. Destroy infected plants.",
-        "fertilizer": "Use phosphorus-rich fertilizer. Avoid waterlogging.",
+        "plant": {"en": "Potato", "ne": "आलु (Potato)"},
+        "disease": {"en": "Late Blight (Phytophthora infestans)", "ne": "पछौटे डढुवा रोग (Late Blight)"},
+        "severity": {"en": "Very High", "ne": "अति उच्च (Very High)"},
+        "treatment": {
+            "en": "Apply Metalaxyl + Mancozeb fungicide immediately. Destroy infected plants.",
+            "ne": "तुरुन्तै मेटालाक्सिल + म्यान्कोजेब ढुसीनाशक विषादी प्रयोग गर्नुहोस्। संक्रमित बिरुवाहरू नष्ट गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Use phosphorus-rich fertilizer. Avoid waterlogging.",
+            "ne": "फस्फोरसयुक्त मलको प्रयोग गर्नुहोस्। खेतमा पानी जम्न नदिनुहोस्।"
+        },
         "buy_links": [
             kheti("metalaxyl mancozeb", "Metalaxyl + Mancozeb Fungicide"),
             kheti("phosphorus fertilizer", "Phosphorus Fertilizer"),
@@ -166,11 +230,17 @@ DISEASE_INFO = {
 
     # ===== RICE =====
     "RICE_HEALTHY": {
-        "plant": "Rice (Paddy)",
-        "disease": "Healthy",
-        "severity": "None",
-        "treatment": "No treatment needed.",
-        "fertilizer": "Apply urea at tillering stage. Use DAP at transplanting.",
+        "plant": {"en": "Rice (Paddy)", "ne": "धान (Rice)"},
+        "disease": {"en": "Healthy", "ne": "स्वस्थ (Healthy)"},
+        "severity": {"en": "None", "ne": "छैन (None)"},
+        "treatment": {
+            "en": "No treatment needed.",
+            "ne": "कुनै उपचार आवश्यक छैन।"
+        },
+        "fertilizer": {
+            "en": "Apply urea at tillering stage. Use DAP at transplanting.",
+            "ne": "गाँज आउने चरणमा युरिया प्रयोग गर्नुहोस्। रोप्ने समयमा डीएपी (DAP) मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("urea fertilizer", "Urea Fertilizer"),
             kheti("DAP fertilizer", "DAP Fertilizer"),
@@ -178,11 +248,17 @@ DISEASE_INFO = {
     },
 
     "RICE_LEAF_BLAST": {
-        "plant": "Rice (Paddy)",
-        "disease": "Rice Blast (Pyricularia oryzae)",
-        "severity": "High",
-        "treatment": "Apply Tricyclazole or Isoprothiolane fungicide. Avoid excess nitrogen.",
-        "fertilizer": "Reduce nitrogen. Apply silica fertilizer to strengthen leaves.",
+        "plant": {"en": "Rice (Paddy)", "ne": "धान (Rice)"},
+        "disease": {"en": "Rice Blast (Pyricularia oryzae)", "ne": "मरिचे/मरुवा रोग (Rice Blast)"},
+        "severity": {"en": "High", "ne": "उच्च (High)"},
+        "treatment": {
+            "en": "Apply Tricyclazole or Isoprothiolane fungicide. Avoid excess nitrogen.",
+            "ne": "ट्राइसाइक्लाजोल वा आइसोप्रोथियोलेन ढुसीनाशक विषादी प्रयोग गर्नुहोस्। अत्यधिक नाइट्रोजनको प्रयोग नगर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Reduce nitrogen. Apply silica fertilizer to strengthen leaves.",
+            "ne": "नाइट्रोजनको मात्रा घटाउनुहोस्। पातहरूलाई बलियो बनाउन सिलिका (Silica) मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("tricyclazole fungicide", "Tricyclazole Fungicide"),
             kheti("silica fertilizer", "Silica Fertilizer"),
@@ -190,11 +266,17 @@ DISEASE_INFO = {
     },
 
     "RICE_LEAF_BLIGHT": {
-        "plant": "Rice (Paddy)",
-        "disease": "Bacterial Leaf Blight",
-        "severity": "High",
-        "treatment": "Apply copper oxychloride. Remove infected crop debris after harvest.",
-        "fertilizer": "Avoid excess nitrogen. Apply potassium fertilizer.",
+        "plant": {"en": "Rice (Paddy)", "ne": "धान (Rice)"},
+        "disease": {"en": "Bacterial Leaf Blight", "ne": "जीवाणुजन्य पात डढुवा रोग (Bacterial Blight)"},
+        "severity": {"en": "High", "ne": "उच्च (High)"},
+        "treatment": {
+            "en": "Apply copper oxychloride. Remove infected crop debris after harvest.",
+            "ne": "कपर अक्सिक्लोराइड प्रयोग गर्नुहोस्। कटानीपछि संक्रमित बालीका अवशेषहरू हटाउनुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Avoid excess nitrogen. Apply potassium fertilizer.",
+            "ne": "अत्यधिक नाइट्रोजनको प्रयोग नगर्नुहोस्। पोटासियम मल प्रयोग गर्नुहोस्।"
+        },
         "buy_links": [
             kheti("copper oxychloride", "Copper Oxychloride Fungicide"),
             kheti("potassium fertilizer", "Potassium Fertilizer"),
@@ -202,11 +284,17 @@ DISEASE_INFO = {
     },
 
     "RICE_LEAF_BROWN_SPOT": {
-        "plant": "Rice (Paddy)",
-        "disease": "Brown Spot (Cochliobolus miyabeanus)",
-        "severity": "Medium",
-        "treatment": "Apply Mancozeb or Iprodione fungicide. Use certified disease-free seeds.",
-        "fertilizer": "Apply potassium and phosphorus. Improve soil fertility with compost.",
+        "plant": {"en": "Rice (Paddy)", "ne": "धान (Rice)"},
+        "disease": {"en": "Brown Spot (Cochliobolus miyabeanus)", "ne": "खैरो दाग रोग (Brown Spot)"},
+        "severity": {"en": "Medium", "ne": "मध्यम (Medium)"},
+        "treatment": {
+            "en": "Apply Mancozeb or Iprodione fungicide. Use certified disease-free seeds.",
+            "ne": "म्यान्कोजेब वा इप्रोडिओन ढुसीनाशक विषादी प्रयोग गर्नुहोस्। प्रमाणित रोगमुक्त बिउ विजन प्रयोग गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "Apply potassium and phosphorus. Improve soil fertility with compost.",
+            "ne": "पोटासियम र फस्फोरस मल प्रयोग गर्नुहोस्। कम्पोस्ट मलद्वारा माटोको उर्वराशक्ति सुधार्नुहोस्।"
+        },
         "buy_links": [
             kheti("mancozeb fungicide", "Mancozeb Fungicide"),
             kheti("potassium phosphorus fertilizer", "Potassium + Phosphorus Fertilizer"),
@@ -226,14 +314,22 @@ def get_info(class_name: str) -> dict:
     key = class_name.upper()
     if key in DISEASE_INFO:
         info = DISEASE_INFO[key].copy()
-        info["color"] = SEVERITY_COLOR.get(info["severity"], "#6b7280")
+        english_severity = info["severity"].get("en", "None")
+        info["color"] = SEVERITY_COLOR.get(english_severity, "#6b7280")
         return info
+
     return {
-        "plant": "Unknown",
-        "disease": "Not recognized",
-        "severity": "Unknown",
-        "treatment": "Could not identify the leaf. Please upload a clearer image.",
-        "fertilizer": "N/A",
+        "plant": {"en": "Unknown", "ne": "अज्ञात (Unknown)"},
+        "disease": {"en": "Not recognized", "ne": "पहिचान हुन नसकेको (Not recognized)"},
+        "severity": {"en": "Unknown", "ne": "अज्ञात (Unknown)"},
+        "treatment": {
+            "en": "Could not identify the leaf. Please upload a clearer photo.",
+            "ne": "पात पहिचान गर्न सकिएन। कृपया स्पष्ट फोटो अपलोड गर्नुहोस्।"
+        },
+        "fertilizer": {
+            "en": "No recommendation available.",
+            "ne": "कुनै सिफारिस उपलब्ध छैन।"
+        },
         "color": "#6b7280",
         "buy_links": []
     }

@@ -91,9 +91,42 @@ def predict():
         filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
 
-    result = predict_image(filepath)
-    result["image_path"] = "/" + filepath
-    return render_template("result.html", result=result)
+            # 1. Run your existing AI inference function
+        # 1. Run AI inference — returns full info dict with confidence
+        result = predict_image(filepath)
+        result_class = result["class_name"]
+        result_confidence = result["confidence"]
+        # 2. Extract language request parameters (defaults to English 'en')
+        lang = request.form.get("lang", "en")
+        if lang not in ["en", "ne"]:
+            lang = "en"
 
+        # 3. Pull bilingual dictionary profiles from disease_info.py
+        info = get_info(result_class)
+
+        # 4. Construct a unified, language-filtered data response object
+        localized_data = {
+    "plant_en": info["plant"]["en"],
+        "plant_ne": info["plant"]["ne"],
+    "disease_en": info["disease"]["en"],
+    "disease_ne": info["disease"]["ne"],
+    "severity_en": info["severity"]["en"],
+    "severity_ne": info["severity"]["ne"],
+    "treatment_en": info["treatment"]["en"],
+    "treatment_ne": info["treatment"]["ne"],
+    "fertilizer_en": info["fertilizer"]["en"],
+    "fertilizer_ne": info["fertilizer"]["ne"],
+    "color": info["color"],
+    "buy_links": info["buy_links"],
+    "image_path": "/" + filepath,
+    "confidence": result_confidence,
+}
+
+
+# 5. Smart routing condition split for web dashboard or React Native apps
+        if request.form.get("client") == "mobile" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return jsonify({"status": "success", "data": localized_data})
+        else:
+            return render_template("result.html", result=localized_data)
 if __name__ == "__main__":
     app.run(debug=True)

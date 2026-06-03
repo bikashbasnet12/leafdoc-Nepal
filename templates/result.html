@@ -28,7 +28,6 @@
 
     body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
 
-    /* NAV */
     nav {
       background: var(--green);
       padding: 0 40px;
@@ -48,7 +47,6 @@
     .logo-text span { color: var(--yellow); }
 
     .nav-right { display: flex; align-items: center; gap: 24px; }
-
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
     .nav-links a:hover { color: var(--yellow); }
@@ -61,7 +59,6 @@
       padding: 4px;
       gap: 2px;
     }
-
     .lang-btn {
       padding: 5px 14px;
       border-radius: 16px;
@@ -73,10 +70,8 @@
       background: transparent;
       color: rgba(255,255,255,0.7);
     }
-
     .lang-btn.active { background: white; color: var(--green); }
 
-    /* PAGE */
     .page { max-width: 620px; margin: 40px auto; padding: 0 20px 60px; }
 
     .result-card {
@@ -87,10 +82,8 @@
     }
 
     .leaf-img { width: 100%; max-height: 280px; object-fit: cover; }
-
     .result-body { padding: 28px; }
 
-    /* Confidence */
     .conf-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .conf-label { font-size: 13px; color: var(--muted); font-weight: 600; }
     .conf-value { font-size: 22px; font-weight: 800; color: var(--green); }
@@ -99,16 +92,13 @@
     .conf-bar { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--green-light), var(--green)); }
     .conf-note { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 20px; }
 
-    /* Info grid */
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
-
     .info-box { background: #f8fffe; border: 2px solid #e0f0e8; border-radius: 14px; padding: 16px; }
     .info-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
     .info-val { font-size: 18px; font-weight: 800; color: var(--green); }
 
     .severity-badge { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; color: white; }
 
-    /* Sections */
     .section { margin-bottom: 20px; }
     .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
     .section-body { font-size: 14px; color: #333; line-height: 1.7; padding: 14px 16px; border-radius: 12px; border-left: 4px solid var(--green-light); background: #f8fffe; }
@@ -117,71 +107,36 @@
 
     .healthy-banner { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-radius: 14px; padding: 16px 20px; font-weight: 800; font-size: 15px; margin-bottom: 20px; text-align: center; }
 
-    /* Buy section */
     .buy-section { margin-bottom: 20px; }
     .buy-cards { display: flex; flex-direction: column; gap: 10px; }
-
     .buy-card { display: flex; align-items: center; gap: 12px; background: #f8fffe; border: 2px solid #e0f0e8; border-radius: 14px; padding: 14px 16px; transition: border-color 0.2s; }
     .buy-card:hover { border-color: var(--green-light); }
-
     .buy-rank { width: 32px; height: 32px; background: var(--green); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0; }
-
     .buy-info { flex: 1; }
     .buy-name { font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 2px; }
     .buy-platform { font-size: 11px; color: var(--muted); font-weight: 600; }
-
     .buy-badge { font-size: 11px; color: white; background: var(--green-mid); border-radius: 20px; padding: 3px 10px; font-weight: 700; white-space: nowrap; }
-
     .buy-btn { background: var(--green); color: white; text-decoration: none; padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
     .buy-btn:hover { background: var(--green-mid); transform: translateY(-1px); }
-
     .buy-note { font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center; }
 
     .again-btn { display: block; text-align: center; background: linear-gradient(135deg, var(--green), var(--green-mid)); color: white; text-decoration: none; padding: 16px; border-radius: 14px; font-weight: 800; font-size: 15px; transition: all 0.3s; margin-top: 4px; }
     .again-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.3); }
+
+    .action-btns { display: flex; gap: 10px; margin-bottom: 12px; }
+    .action-btn { flex: 1; display: block; text-align: center; padding: 13px 10px; border-radius: 12px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+    .map-btn { background: #e8f5e9; color: #2d6a4f; border: 2px solid #74c69d; }
+    .map-btn:hover { background: #c8e6c9; }
+    .whatsapp-btn { background: #25D366; color: white; }
+    .whatsapp-btn:hover { background: #1da851; }
 
     @media (max-width: 600px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
       .result-body { padding: 20px; }
       .buy-badge { display: none; }
+      .action-btns { flex-direction: column; }
     }
-    .action-btns {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.action-btn {
-  flex: 1;
-  display: block;
-  text-align: center;
-  padding: 13px 10px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.map-btn {
-  background: #e8f5e9;
-  color: #2d6a4f;
-  border: 2px solid #74c69d;
-}
-
-.map-btn:hover { background: #c8e6c9; }
-
-.whatsapp-btn {
-  background: #25D366;
-  color: white;
-}
-
-.whatsapp-btn:hover { background: #1da851; }
-
-@media (max-width: 600px) {
-  .action-btns { flex-direction: column; }
-}
   </style>
 </head>
 <body>
@@ -193,9 +148,9 @@
     </a>
     <div class="nav-right">
       <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/#crops">Crops</a></li>
-        <li><a href="/#how">How it Works</a></li>
+        <li><a href="/" data-en="Home" data-ne="गृहपृष्ठ">Home</a></li>
+        <li><a href="/#crops" data-en="Crops" data-ne="बालीहरू">Crops</a></li>
+        <li><a href="/#how" data-en="How it Works" data-ne="कसरी काम गर्छ">How it Works</a></li>
       </ul>
       <div class="lang-toggle">
         <button class="lang-btn active" onclick="setLang('en')">EN</button>
@@ -215,7 +170,9 @@
 
         <!-- Confidence -->
         <div class="conf-row">
-          <span class="conf-label" data-en="Model Confidence" data-ne="मोडेल आत्मविश्वास">Model Confidence</span>
+          <span class="conf-label"
+                data-en="Model Confidence"
+                data-ne="मोडेल आत्मविश्वास">Model Confidence</span>
           <span class="conf-value">{{ result.confidence }}%</span>
         </div>
         <div class="conf-bar-bg">
@@ -238,42 +195,63 @@
         <div class="info-grid">
           <div class="info-box">
             <div class="info-lbl" data-en="Plant" data-ne="बिरुवा">Plant</div>
-            <div class="info-val">{{ result.plant }}</div>
+            <div class="info-val"
+                 data-en="{{ result.plant_en }}"
+                 data-ne="{{ result.plant_ne }}">{{ result.plant_en }}</div>
           </div>
           <div class="info-box">
             <div class="info-lbl" data-en="Severity" data-ne="गम्भीरता">Severity</div>
-            <span class="severity-badge" style="background: {{ result.color }};">{{ result.severity }}</span>
+            <span class="severity-badge"
+                  style="background: {{ result.color }};"
+                  data-en="{{ result.severity_en }}"
+                  data-ne="{{ result.severity_ne }}">{{ result.severity_en }}</span>
           </div>
         </div>
 
-        {% if result.severity == "None" %}
-        <div class="healthy-banner" data-en="This leaf appears healthy. No disease detected." data-ne="यो पात स्वस्थ देखिन्छ। कुनै रोग पत्ता लागेन।">
+        {% if result.severity_en == "None" %}
+        <div class="healthy-banner"
+             data-en="This leaf appears healthy. No disease detected."
+             data-ne="यो पात स्वस्थ देखिन्छ। कुनै रोग पत्ता लागेन।">
           This leaf appears healthy. No disease detected.
         </div>
         {% endif %}
 
-        <!-- Condition -->
+        <!-- Detected Condition -->
         <div class="section">
-          <div class="section-title" data-en="Detected Condition" data-ne="पत्ता लागेको अवस्था">Detected Condition</div>
-          <div class="section-body">{{ result.disease }}</div>
+          <div class="section-title"
+               data-en="Detected Condition"
+               data-ne="पत्ता लागेको अवस्था">Detected Condition</div>
+          <div class="section-body"
+               data-en="{{ result.disease_en }}"
+               data-ne="{{ result.disease_ne }}">{{ result.disease_en }}</div>
         </div>
 
         <!-- Treatment -->
         <div class="section">
-          <div class="section-title" data-en="Recommended Treatment" data-ne="सिफारिस गरिएको उपचार">Recommended Treatment</div>
-          <div class="section-body red">{{ result.treatment }}</div>
+          <div class="section-title"
+               data-en="Recommended Treatment"
+               data-ne="सिफारिस गरिएको उपचार">Recommended Treatment</div>
+          <div class="section-body red"
+               data-en="{{ result.treatment_en }}"
+               data-ne="{{ result.treatment_ne }}">{{ result.treatment_en }}</div>
         </div>
 
         <!-- Fertilizer -->
         <div class="section">
-          <div class="section-title" data-en="Fertilizer Advice" data-ne="मल सल्लाह">Fertilizer Advice</div>
-          <div class="section-body blue">{{ result.fertilizer }}</div>
+          <div class="section-title"
+               data-en="Fertilizer Advice"
+               data-ne="मल सल्लाह">Fertilizer Advice</div>
+          <div class="section-body blue"
+               data-en="{{ result.fertilizer_en }}"
+               data-ne="{{ result.fertilizer_ne }}">{{ result.fertilizer_en }}</div>
         </div>
 
         <!-- Buy -->
         {% if result.buy_links %}
         <div class="buy-section">
-          <div class="section-title" data-en="Buy Products Online in Nepal" data-ne="नेपालमा अनलाइन उत्पादन किन्नुहोस्">Buy Products Online in Nepal</div>
+          <div class="section-title"
+               data-en="Buy Products Online in Nepal"
+               data-ne="नेपालमा अनलाइन उत्पादन किन्नुहोस्">Buy Products Online in Nepal</div>
           <div class="buy-cards">
             {% for link in result.buy_links %}
             <div class="buy-card">
@@ -282,22 +260,29 @@
                 <div class="buy-name">{{ link.label }}</div>
                 <div class="buy-platform">{{ link.platform }}</div>
               </div>
-              <span class="buy-badge">
-                {% if loop.index == 1 %}<span data-en="Best Match" data-ne="सर्वोत्तम मिलान">Best Match</span>
-                {% elif loop.index == 2 %}<span data-en="Good Match" data-ne="राम्रो मिलान">Good Match</span>
-                {% else %}<span data-en="Available" data-ne="उपलब्ध">Available</span>
-                {% endif %}
+              <span class="buy-badge"
+                    {% if loop.index == 1 %}data-en="Best Match" data-ne="सर्वोत्तम मिलान"
+                    {% elif loop.index == 2 %}data-en="Good Match" data-ne="राम्रो मिलान"
+                    {% else %}data-en="Available" data-ne="उपलब्ध"{% endif %}>
+                {% if loop.index == 1 %}Best Match
+                {% elif loop.index == 2 %}Good Match
+                {% else %}Available{% endif %}
               </span>
-              <a href="{{ link.url }}" target="_blank" class="buy-btn" data-en="Buy Now" data-ne="अहिले किन्नुहोस्">Buy Now</a>
+              <a href="{{ link.url }}" target="_blank" class="buy-btn"
+                 data-en="Buy Now"
+                 data-ne="अहिले किन्नुहोस्">Buy Now</a>
             </div>
             {% endfor %}
           </div>
-          <p class="buy-note" data-en="Links open product search on Kheti.farm Nepal. Compare prices before purchasing." data-ne="लिङ्कहरूले Kheti.farm Nepal मा उत्पादन खोज खोल्छन्। किन्नु अघि मूल्य तुलना गर्नुहोस्।">
+          <p class="buy-note"
+             data-en="Links open product search on Kheti.farm Nepal. Compare prices before purchasing."
+             data-ne="लिङ्कहरूले Kheti.farm Nepal मा उत्पादन खोज खोल्छन्। किन्नु अघि मूल्य तुलना गर्नुहोस्।">
             Links open product search on Kheti.farm Nepal. Compare prices before purchasing.
           </p>
         </div>
         {% endif %}
-        <!-- NEARBY STORE + WHATSAPP BUTTONS -->
+
+        <!-- Action Buttons -->
         <div class="action-btns">
           <a href="https://maps.google.com/?q=agro+store+near+me"
              target="_blank"
@@ -306,7 +291,7 @@
              data-ne="नजिकको कृषि पसल खोज्नुहोस्">
             Find Nearby Agro Store
           </a>
-          <a href="https://wa.me/?text={{ result.disease | urlencode }}%20detected%20on%20{{ result.plant | urlencode }}%20leaf.%20Recommended%20treatment%3A%20{{ result.treatment | urlencode }}%20-%20Detected%20by%20LeafDoc%20Nepal%20(leafdoc-nepal.onrender.com)"
+          <a href="https://wa.me/?text={{ result.disease_en | urlencode }}%20detected%20on%20{{ result.plant_en | urlencode }}%20leaf.%20Recommended%20treatment%3A%20{{ result.treatment_en | urlencode }}%20-%20Detected%20by%20LeafDoc%20Nepal%20(leafdoc-nepal.onrender.com)"
              target="_blank"
              class="action-btn whatsapp-btn"
              data-en="Share via WhatsApp"
@@ -315,7 +300,9 @@
           </a>
         </div>
 
-        <a href="/" class="again-btn" data-en="Analyze Another Leaf" data-ne="अर्को पात विश्लेषण गर्नुहोस्">Analyze Another Leaf</a>
+        <a href="/" class="again-btn"
+           data-en="Analyze Another Leaf"
+           data-ne="अर्को पात विश्लेषण गर्नुहोस्">Analyze Another Leaf</a>
 
       </div>
     </div>
@@ -324,17 +311,21 @@
   <script>
     function setLang(lang) {
       localStorage.setItem('leafdoc_lang', lang);
+
+      // Update toggle button styles
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       document.querySelector(`.lang-btn:${lang === 'en' ? 'first-child' : 'last-child'}`).classList.add('active');
 
+      // Switch all elements that have data-en / data-ne attributes
       document.querySelectorAll('[data-en]').forEach(el => {
         const text = el.getAttribute(`data-${lang}`);
         if (text) el.textContent = text;
       });
 
+      // Handle confidence note separately (uses compound keys like data-en-high)
       const note = document.getElementById('conf-note-text');
       const conf = {{ result.confidence }};
-      let key = conf >= 80 ? 'high' : conf >= 60 ? 'mid' : 'low';
+      const key = conf >= 80 ? 'high' : conf >= 60 ? 'mid' : 'low';
       note.textContent = note.getAttribute(`data-${lang}-${key}`);
     }
 
