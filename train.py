@@ -7,7 +7,6 @@ from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader, random_split, Subset
 import random
 
-# Fix SSL issue on Mac
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # ====== SETTINGS ======
@@ -80,9 +79,7 @@ train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, nu
 val_loader   = DataLoader(val_dataset,   batch_size=BATCH_SIZE, shuffle=False, num_workers=0)
 
 print(f"Train: {train_size} | Val: {val_size}\n")
-
-# ====== MODEL (ResNet18 pretrained) ======
-print("Downloading pretrained model...")
+print("Downloading  model...")
 model = models.resnet18(weights="IMAGENET1K_V1")
 
 # Freeze base layers
