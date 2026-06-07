@@ -39,6 +39,18 @@ def preprocess(image_path):
     arr = np.expand_dims(arr, axis=0)
     return arr.astype(np.float32)
 
+# ====== LEAF VALIDATOR ======
+def is_likely_leaf(image_path):
+    """Check if image contains enough green pixels to be a leaf."""
+    img = Image.open(image_path).convert("RGB")
+    arr = np.array(img, dtype=np.float32)
+    r, g, b = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
+    # Green dominates over red and blue
+    green_pixels = np.sum((g > r + 10) & (g > b + 10))
+    total_pixels = arr.shape[0] * arr.shape[1]
+    green_ratio = green_pixels / total_pixels
+    return green_ratio > 0.10  # at least 10% green pixels
+
 # ====== PREDICT FUNCTION ======
 def predict_image(image_path):
     tensor = preprocess(image_path)
@@ -92,20 +104,45 @@ def predict():
         filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
 
-    # ── Step 2: Run AI inference (runs for BOTH camera and upload) ──
+    # ── Step 2: Validate it looks like a leaf ──
+    # Works for BOTH camera and upload since both save to filepath first
+    if not is_likely_leaf(filepath):
+        error_msg = {
+            "en": "No plant leaf detected. Please upload a clear photo of a leaf.",
+            "ne": "पात फेला परेन। कृपया पातको स्पष्ट फोटो अपलोड गर्नुहोस्।"
+        }
+        lang = request.form.get("lang", "en")
+        if request.form.get("client") == "mobile" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return jsonify({"status": "error", "message": error_msg[lang]}), 400
+        else:
+            return render_template("index.html", error=error_msg[lang])
+
+    # ── Step 3: Run AI inference ──
     result = predict_image(filepath)
     result_class = result["class_name"]
     result_confidence = result["confidence"]
 
-    # ── Step 3: Language ──
+    # ── Step 4: Block low confidence results ──
+    if result_confidence < 75:
+        error_msg = {
+            "en": f"Low confidence ({result_confidence}%). Please use a clearer, closer leaf photo.",
+            "ne": f"कम आत्मविश्वास ({result_confidence}%)। कृपया पातको नजिकको स्पष्ट फोटो प्रयोग गर्नुहोस्।"
+        }
+        lang = request.form.get("lang", "en")
+        if request.form.get("client") == "mobile" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return jsonify({"status": "error", "message": error_msg[lang]}), 400
+        else:
+            return render_template("index.html", error=error_msg[lang])
+
+    # ── Step 5: Language ──
     lang = request.form.get("lang", "en")
     if lang not in ["en", "ne"]:
         lang = "en"
 
-    # ── Step 4: Get full bilingual info ──
+    # ── Step 6: Get full bilingual info ──
     info = get_info(result_class)
 
-    # ── Step 5: Build response object ──
+    # ── Step 7: Build response object ──
     localized_data = {
         "plant_en":      info["plant"]["en"],
         "plant_ne":      info["plant"]["ne"],
@@ -123,7 +160,7 @@ def predict():
         "confidence":    result_confidence,
     }
 
-    # ── Step 6: Return JSON for mobile, HTML for web ──
+    # ── Step 8: Return JSON for mobile, HTML for web ──
     if request.form.get("client") == "mobile" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify({"status": "success", "data": localized_data})
     else:
