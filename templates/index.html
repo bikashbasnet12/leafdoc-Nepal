@@ -686,6 +686,22 @@
       <h2 data-en="Upload Leaf Photo" data-ne="पातको फोटो अपलोड गर्नुहोस्">Upload Leaf Photo</h2>
       <p data-en="Take a clear close-up photo of a single leaf" data-ne="एउटा पातको स्पष्ट नजिकको फोटो लिनुहोस्">Take a clear close-up photo of a single leaf</p>
 
+      <!-- ERROR MESSAGE -->
+      {% if error %}
+      <div style="
+        background: #fee2e2;
+        border: 1px solid #fca5a5;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 20px;
+        color: #991b1b;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+      ">
+        ⚠️ {{ error }}
+      </div>
+      {% endif %}
       <!-- TABS -->
       <div class="input-tabs">
         <button class="tab-btn active" onclick="switchTab('upload')" data-en="Upload Photo" data-ne="फोटो अपलोड">Upload Photo</button>
