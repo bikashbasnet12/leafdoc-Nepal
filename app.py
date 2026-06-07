@@ -21,22 +21,22 @@ with open(CLASSES_PATH) as f:
 
 num_classes = len(class_names)
 
-# ====== LOAD ONNX MODEL (very lightweight) ======
+# ====== LOAD ONNX MODEL ======
 session = ort.InferenceSession(MODEL_PATH)
 input_name = session.get_inputs()[0].name
 print(f"ONNX model loaded. Classes: {class_names}")
 
-# ====== TRANSFORMS (manual, no PyTorch needed) ======
+# ====== TRANSFORMS ======
 MEAN = np.array([0.485, 0.456, 0.406], dtype=np.float32)
 STD  = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 
 def preprocess(image_path):
     img = Image.open(image_path).convert("RGB")
-    img = img.resize((224,224), Image.LANCZOS)
+    img = img.resize((224, 224), Image.LANCZOS)
     arr = np.array(img, dtype=np.float32) / 255.0
     arr = (arr - MEAN) / STD
-    arr = arr.transpose(2, 0, 1)          # HWC → CHW
-    arr = np.expand_dims(arr, axis=0)     # add batch dim
+    arr = arr.transpose(2, 0, 1)
+    arr = np.expand_dims(arr, axis=0)
     return arr.astype(np.float32)
 
 # ====== PREDICT FUNCTION ======
@@ -44,7 +44,6 @@ def predict_image(image_path):
     tensor = preprocess(image_path)
     outputs = session.run(None, {input_name: tensor})[0]
 
-    # Softmax
     exp = np.exp(outputs - outputs.max())
     probabilities = exp / exp.sum()
 
@@ -70,6 +69,7 @@ def home():
 def predict():
     source = request.form.get("source", "upload")
 
+    # ── Step 1: Get the image (camera OR upload) ──
     if source == "camera":
         camera_data = request.form.get("camera_data", "")
         if not camera_data:
@@ -82,6 +82,7 @@ def predict():
         filepath = os.path.join(UPLOAD_FOLDER, filename)
         with open(filepath, "wb") as f:
             f.write(image_bytes)
+
     else:
         if "file" not in request.files:
             return jsonify({"error": "No file uploaded"}), 400
@@ -91,41 +92,21 @@ def predict():
         filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
 
-            # 1. Run your existing AI inference function
-        # 1. Run AI inference — returns full info dict with confidence
-        result = predict_image(filepath)
-        result_class = result["class_name"]
-        result_confidence = result["confidence"]
-        # 2. Extract language request parameters (defaults to English 'en')
-        lang = request.form.get("lang", "en")
-        if lang not in ["en", "ne"]:
-            lang = "en"
+    # ── Step 2: Run AI inference (runs for BOTH camera and upload) ──
+    result = predict_image(filepath)
+    result_class = result["class_name"]
+    result_confidence = result["confidence"]
 
-        # 3. Pull bilingual dictionary profiles from disease_info.py
-        info = get_info(result_class)
+    # ── Step 3: Language ──
+    lang = request.form.get("lang", "en")
+    if lang not in ["en", "ne"]:
+        lang = "en"
 
-        # 4. Construct a unified, language-filtered data response object
-        localized_data = {
-    "plant_en": info["plant"]["en"],
-        "plant_ne": info["plant"]["ne"],
-    "disease_en": info["disease"]["en"],
-    "disease_ne": info["disease"]["ne"],
-    "severity_en": info["severity"]["en"],
-    "severity_ne": info["severity"]["ne"],
-    "treatment_en": info["treatment"]["en"],
-    "treatment_ne": info["treatment"]["ne"],
-    "fertilizer_en": info["fertilizer"]["en"],
-    "fertilizer_ne": info["fertilizer"]["ne"],
-    "color": info["color"],
-    "buy_links": info["buy_links"],
-    "image_path": "/" + filepath,
-    "confidence": result_confidence,
-}
+    # ── Step 4: Get full bilingual info ──
+    info = get_info(result_class)
 
-
-# 5. Smart routing condition split for web dashboard or React Native apps
-        if request.form.get("client") == "mobile" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
-            return jsonify({"status": "success", "data": {
+    # ── Step 5: Build response object ──
+    localized_data = {
         "plant_en":      info["plant"]["en"],
         "plant_ne":      info["plant"]["ne"],
         "disease_en":    info["disease"]["en"],
@@ -138,9 +119,15 @@ def predict():
         "fertilizer_ne": info["fertilizer"]["ne"],
         "color":         info["color"],
         "buy_links":     info["buy_links"],
+        "image_path":    "/" + filepath,
         "confidence":    result_confidence,
-    }})
-        else:
-            return render_template("result.html", result=localized_data)
+    }
+
+    # ── Step 6: Return JSON for mobile, HTML for web ──
+    if request.form.get("client") == "mobile" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify({"status": "success", "data": localized_data})
+    else:
+        return render_template("result.html", result=localized_data)
+
 if __name__ == "__main__":
     app.run(debug=True)
