@@ -688,7 +688,7 @@
 
       <!-- ERROR MESSAGE -->
       {% if error %}
-      <div id = "error-box" style="
+      <div style="
         background: #fee2e2;
         border: 1px solid #fca5a5;
         border-radius: 10px;
@@ -962,8 +962,7 @@
       currentLang = lang;
       localStorage.setItem('leafdoc_lang', lang);
       document.getElementById('lang-input').value = lang;
-      const errorBox = document.getElementById('error-box');
-      if (errorBox) errorBox.style.display = 'none';
+  
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       document.querySelector(`.lang-btn:${lang === 'en' ? 'first-child' : 'last-child'}`).classList.add('active');
 
